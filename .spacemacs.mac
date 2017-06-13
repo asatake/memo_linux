@@ -36,18 +36,21 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     go
      python
      ruby
      html
      javascript
      typescript
      php
+     sql
      erlang
      latex
      elixir
      yaml
      c-c++
      nginx
+     docker
      helm
      emacs-lisp
      git
@@ -61,7 +64,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     ;; spell-checking
+     (spell-checking :variables enable-flyspell-auto-completion t)
      better-defaults
      auto-completion
      syntax-checking
@@ -74,7 +77,9 @@ values."
    dotspacemacs-additional-packages '
    (
     codic
+    org-gfm
     org-preview-html
+    php-eldoc
     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -281,7 +286,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative nil)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -335,13 +340,16 @@ you should place your code here."
   ;;                     (when (equal system-type 'darwin)
   ;;                       (setq mac-option-modifire 'meta)))
   ;;   )
+  (setq ns-command-modifier (quote meta))
+  (setq ns-alternate-modifier (quote super))
   (global-set-key (kbd "\C-h") 'delete-backward-char)
   (global-set-key (kbd "\C- ") 'mark)
   (global-set-key (kbd "<M-down>") (kbd "C-u 5 C-n"))
   (global-set-key (kbd "<M-up>") (kbd "C-u 5 C-p"))
-  (set-fontset-font
-   nil 'japanese-zenkaku
-   (font-spec :family "M+ 1m"))
+  (define-key global-map [?\¥] [?\\])
+  (define-key global-map [?\C-¥] [?\C-\\])
+  (define-key global-map [?\M-¥] [?\M-\\])
+  (define-key global-map [?\C-\M-¥] [?\C-\M-\\])
   (set-face-font 'default "M+ 1m-14")
   (require 'ucs-normalize)
   (set-file-name-coding-system 'utf-8-hfs)
@@ -355,10 +363,9 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(codic-api-token "ST1BeRleZtOjWgEPHQNMckoWvBbiweNXT")
- '(org-reveal-root "/Users/tetsuhiro_manome/Documents/slides/reveal.js")
  '(package-selected-packages
    (quote
-    (ox-gfm pangu-spacing japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo erlang company-auctex auctex unfill mwim ox-reveal org-preview-html codic ob-elixir flycheck-mix flycheck-credo alchemist elixir-mode yaml-mode twittering-mode nginx-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby xterm-color shell-pop multi-term git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify web-mode web-beautify tide typescript-mode flycheck tagedit smeargle slim-mode scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements phpunit phpcbf php-auto-yasnippets orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow magit-gh-pulls livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc hy-mode htmlize helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet haml-mode gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh marshal logito pcache ht gh-md fuzzy evil-magit magit magit-popup git-commit with-editor emmet-mode drupal-mode php-mode disaster cython-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company coffee-mode cmake-mode clang-format auto-yasnippet yasnippet anaconda-mode pythonic ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparen s evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (dockerfile-mode docker tablist docker-tramp flyspell-popup helm-gtags ggtags php-eldoc pangu-spacing smartparens sql-indent smarty-mode go-guru go-eldoc company-go go-mode ox-gfm japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo erlang company-auctex auctex unfill mwim ox-reveal org-preview-html codic ob-elixir flycheck-mix flycheck-credo alchemist elixir-mode yaml-mode twittering-mode nginx-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby xterm-color shell-pop multi-term git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify web-mode web-beautify tide typescript-mode flycheck tagedit smeargle slim-mode scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements phpunit phpcbf php-auto-yasnippets orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow magit-gh-pulls livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc hy-mode htmlize helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet haml-mode gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh marshal logito pcache ht gh-md fuzzy evil-magit magit magit-popup git-commit with-editor emmet-mode drupal-mode php-mode disaster cython-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company coffee-mode cmake-mode clang-format auto-yasnippet yasnippet anaconda-mode pythonic ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparen s evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
